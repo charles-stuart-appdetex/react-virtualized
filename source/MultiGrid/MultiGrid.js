@@ -2,10 +2,13 @@
 import PropTypes from 'prop-types';
 import * as React from 'react';
 import {polyfill} from 'react-lifecycles-compat';
+import {throttle} from 'throttle-debounce';
 import CellMeasurerCacheDecorator from './CellMeasurerCacheDecorator';
 import Grid from '../Grid';
 
 const SCROLLBAR_SIZE_BUFFER = 20;
+
+console.log('DEBUG linked/throttled MultiGrid');
 
 /**
  * Renders 1, 2, or 4 Grids depending on configuration.
@@ -685,7 +688,7 @@ class MultiGrid extends React.PureComponent {
         columnWidth={this._columnWidthRightGrid}
         deferredMeasurementCache={this._deferredMeasurementCacheBottomRightGrid}
         height={this._getBottomGridHeight(props)}
-        onScroll={this._onScroll}
+        onScroll={throttle(this._onScroll, 500).bind(this)}
         onScrollbarPresenceChange={this._onScrollbarPresenceChange}
         ref={this._bottomRightGridRef}
         rowCount={Math.max(0, rowCount - fixedRowCount)}

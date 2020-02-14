@@ -18,6 +18,7 @@ import type {
 import type {AnimationTimeoutId} from '../utils/requestAnimationTimeout';
 
 import * as React from 'react';
+import {throttle} from 'throttle-debounce';
 import clsx from 'clsx';
 import calculateSizeAndPositionDataAndUpdateScrollOffset from './utils/calculateSizeAndPositionDataAndUpdateScrollOffset';
 import ScalingCellSizeAndPositionManager from './utils/ScalingCellSizeAndPositionManager';
@@ -1047,7 +1048,7 @@ class Grid extends React.PureComponent<Props, State> {
         aria-readonly={this.props['aria-readonly']}
         className={clsx('ReactVirtualized__Grid', className)}
         id={id}
-        onScroll={this._onScroll}
+        onScroll={throttle(this._onScroll, 500).bind(this)}
         role={role}
         style={{
           ...gridStyle,
